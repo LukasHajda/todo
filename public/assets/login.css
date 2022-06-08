@@ -1,1 +1,20 @@
+.registration-tab {
+  width: 70%;
+}
 
+.registration-title {
+  width: 54%;
+}
+.registration-title h2 {
+  margin-top: 10px;
+}
+
+.login-text {
+  margin-top: 10px;
+}
+
+.error-message {
+  color: red;
+  float: left;
+  font-weight: 500;
+}

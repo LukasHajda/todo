@@ -23,6 +23,8 @@ mix.sass('resources/assets/sass/style.scss', 'public/assets')
 
     .scripts([
         'resources/assets/frontend/js/jquery.min.js',
+        'resources/assets/frontend/js/jquery-3.5.1.min.js',
+        'resources/assets/frontend/js/jquery-ui.js',
         'resources/assets/frontend/js/bootstrap.bundle.min.js',
 
         'resources/assets/js/frontend.js'
@@ -32,13 +34,17 @@ mix.sass('resources/assets/sass/style.scss', 'public/assets')
     // ******************** Login ********************
     .styles([
         'resources/assets/frontend/css/bootstrap.min.css',
+        'resources/assets/frontend/css/login_form.css',
 
         'public/assets/login.css'
     ], 'public/css/login.min.css')
 
     .scripts([
         'resources/assets/frontend/js/jquery.min.js',
+        'resources/assets/frontend/js/jquery-3.5.1.min.js',
+        'resources/assets/frontend/js/jquery-ui.js',
         'resources/assets/frontend/js/bootstrap.bundle.min.js',
+        'resources/assets/frontend/js/login_form.js',
 
         'resources/assets/js/login.js'
     ], 'public/js/login.min.js')
