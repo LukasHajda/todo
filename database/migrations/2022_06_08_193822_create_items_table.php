@@ -18,8 +18,7 @@ class CreateItemsTable extends Migration
             $table->string('heading', 255)->nullable();
             $table->string('description', 255)->nullable();
             $table->tinyInteger('pre_deleted')->default(0);
-            $table->bigInteger('user_id')->unsigned()->nullable();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null')->onUpdate('set null');
+            $table->tinyInteger('done')->default(0);
             $table->bigInteger('category_id')->unsigned()->nullable();
             $table->foreign('category_id')->references('id')->on('item_categories')->onDelete('set null')->onUpdate('set null');
             $table->timestamps();
