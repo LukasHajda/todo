@@ -16,7 +16,7 @@ class AdminSeeder extends Seeder
     public function run()
     {
         if (!User::where('email', 'admin')->count() > 0) {
-            $admin = User::create([
+            User::create([
                 'username' => 'Admin',
                 'email' => 'admin',
                 'password' => bcrypt('admin'),
@@ -25,7 +25,6 @@ class AdminSeeder extends Seeder
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ]);
-            $admin->save();
         }
     }
 }
