@@ -13,17 +13,21 @@
                 <a class="nav-link" href="#">Items</a>
             </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
+
             <ul class="navbar-nav float-lg-right">
                 <li>
                     <a class="nav-link dropdown-toggle" href="#" id="user" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Username
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="user">
-                        <a class="dropdown-item" href="#">Logout</a>
+                        <form class="form-inline my-2 my-lg-0" method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit">
+                                Logout
+                            </button>
+                        </form>
                     </div>
                 </li>
             </ul>
-        </form>
     </div>
 </nav>

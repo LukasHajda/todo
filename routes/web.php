@@ -16,12 +16,12 @@ use \App\Http\Controllers\PagesController;
 */
 
 
+Route::middleware(['auth'])->namespace('Users')->group(function() {
+    Route::get('/', [PagesController::class, 'index'])->name('index');
+});
+
 Auth::routes([
     'reset' => false,
     'confirm' => false,
     'verify' => false
 ]);
-
-
-
-Route::get('/', [PagesController::class, 'index'])->name('index');
