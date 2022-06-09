@@ -22,4 +22,6 @@ Auth::routes([
     'verify' => false
 ]);
 
+
+
 Route::get('/', [PagesController::class, 'index'])->name('index');
