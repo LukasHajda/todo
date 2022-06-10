@@ -13,6 +13,7 @@
             <div class='fieldset-body' id='login_form'>
                 <button onclick="openLoginInfo();" class='b b-form i i-more'></button>
                 <form method="POST" action="{{ route('login') }}">
+                    @csrf
                     <p class='field'>
                         <label for='user'>E-MAIL</label>
                         <input type='text' id='user' name='email' required>
