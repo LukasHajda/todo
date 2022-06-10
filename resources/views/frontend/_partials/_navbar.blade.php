@@ -17,7 +17,7 @@
             <ul class="navbar-nav float-lg-right">
                 <li>
                     <a class="nav-link dropdown-toggle" href="#" id="user" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Username
+                        {{ auth()->user()->username }}
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="user">
                         <form class="form-inline my-2 my-lg-0" method="POST" action="{{ route('logout') }}">

@@ -18,6 +18,13 @@ use \App\Http\Controllers\PagesController;
 
 Route::middleware(['auth'])->namespace('Users')->group(function() {
     Route::get('/', [PagesController::class, 'index'])->name('index');
+
+    Route::middleware(['admin'])->group(function() {
+        Route::get('/test', function () {
+           return 'Hello';
+        });
+    });
+
 });
 
 Auth::routes([
