@@ -4,8 +4,6 @@
 
 @section('content')
     <div class="container">
-
-{{--        KED JE ADMIN PRIHLASENY --}}
         <div class="row custom-margin">
             <div class="col-12">
                 <div class="card m-b-20">
@@ -32,4 +30,5 @@
         </div>
     </div>
 @endsection
+
 

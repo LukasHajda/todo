@@ -17,18 +17,8 @@ mix.sass('resources/assets/sass/style.scss', 'public/assets')
     // ******************** Web frontend ********************
     .styles([
         'resources/assets/frontend/css/bootstrap.min.css',
-        'resources/assets/frontend/css/bootstrap-colorpicker.min.css',
-        'resources/assets/frontend/css/bootstrap-datepicker.min.css',
-        'resources/assets/frontend/css/buttons.bootstrap4.min.css',
-        'resources/assets/frontend/css/dataTables.bootstrap4.min.css',
-        'resources/assets/frontend/css/icons.css',
-        'resources/assets/frontend/css/jquery.bootstrap-touchspin.min.css',
-        'resources/assets/frontend/css/magnific-popup.css',
-        'resources/assets/frontend/css/metismenu.min.css',
-        'resources/assets/frontend/css/morriscss',
         'resources/assets/frontend/css/login_form.css',
-
-        'resources/assets/frontend/css/login_form.css',
+        'resources/assets/frontend/css/select2.min.css',
 
         'public/assets/style.css'
     ], 'public/css/style.min.css')
@@ -39,6 +29,7 @@ mix.sass('resources/assets/sass/style.scss', 'public/assets')
         'resources/assets/frontend/js/jquery-ui.js',
         'resources/assets/frontend/js/bootstrap.bundle.min.js',
         'resources/assets/frontend/js/login_form.js',
+        'resources/assets/frontend/js/select2.min.js',
 
         'resources/assets/js/frontend.js'
     ], 'public/js/script.min.js')

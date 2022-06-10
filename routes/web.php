@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use \App\Http\Controllers\PagesController;
+use \App\Http\Controllers\ItemsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,12 +17,13 @@ use \App\Http\Controllers\PagesController;
 
 
 Route::middleware(['auth'])->namespace('Users')->group(function() {
-    Route::get('/', [PagesController::class, 'index'])->name('index');
+    Route::get('/', [ItemsController::class, 'index'])->name('index');
 
     Route::middleware(['admin'])->group(function() {
-        Route::get('/test', function () {
-           return 'Hello';
-        });
+        Route::post('/items', [ItemsController::class, 'store'])->name('items.store');
+        Route::get('/items/create', [ItemsController::class, 'create'])->name('items.create');
+        Route::get('/items/edit/{id}', [ItemsController::class, 'edit'])->name('items.edit');
+
     });
 
 });
