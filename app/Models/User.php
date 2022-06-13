@@ -42,4 +42,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function items() {
+        return $this->belongsToMany(Item::class, 'item_user', 'user_id', 'item_id')->withTimestamps();
+    }
+
 }

@@ -22,23 +22,16 @@
                             Dropdown button
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <form action="{{ route('items.done', [$item->id, 'done']) }}" method="GET">
-                                <button class="dropdown-item" type="submit" id="make_finished">Done</button>
-                            </form>
                             @if (auth()->user()->admin)
-                                <form action="{{ route('items.done', [$item->id, 'pre_deleted']) }}" method="GET">
-                                    <button class="dropdown-item" type="submit" id="make_finished">Delete</button>
+                                <form action="{{ route('items.delete', $item->id) }}" method="POST">
+                                    @csrf
+                                    <button class="dropdown-item" type="submit" id="make_finished">Hard delete</button>
                                 </form>
-                                <form action="{{ route('items.edit', $item->id) }}" method="GET">
-                                    <button class="dropdown-item" type="submit">Edit</button>
-                                </form>
-                            @endif
-                            @if (!auth()->user()->admin)
-                                <form action="{{ route('items.done', [$item->id, 'pre_deleted']) }}" method="GET">
-                                    <button class="dropdown-item" type="submit" id="make_finished">Delete</button>
+                                <form action="{{ route('items.restore', $item->id) }}" method="POST">
+                                    @csrf
+                                    <button class="dropdown-item" type="submit">Restore</button>
                                 </form>
                             @endif
-
                         </div>
                     </div>
                 </td>

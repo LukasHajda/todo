@@ -34,8 +34,15 @@
                     <label>Shared</label>
                     <select class="form-control" name="shared">
                         <option value="">None</option>
-                        <option value="1">My</option>
-                        <option value="0">Shared</option>
+                        @if(!auth()->user()->admin)
+                            <option value="{{ auth()->user()->id }}">My</option>
+                            <option value="-1">Shared</option>
+                        @endif
+                        @if(auth()->user()->admin)
+                            @foreach($users as $user)
+                                <option value="{{ $user->id }}">{{ $user->username }}</option>
+                            @endforeach
+                        @endif
                     </select>
                 </div>
             </div>
