@@ -19,12 +19,17 @@
                 <td>
                     <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Dropdown button
+                            Actions
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <form action="{{ route('items.done', [$item->id, 'done']) }}" method="GET">
                                 <button class="dropdown-item" type="submit" id="make_finished">Done</button>
                             </form>
+                            @if (!auth()->user()->admin)
+                                <form action="{{ route('items.show', $item->id) }}" method="GET">
+                                    <button class="dropdown-item" type="submit" id="show_description">Show</button>
+                                </form>
+                            @endif
                             @if (auth()->user()->admin)
                                 <form action="{{ route('items.done', [$item->id, 'pre_deleted']) }}" method="GET">
                                     <button class="dropdown-item" type="submit" id="make_finished">Delete</button>
