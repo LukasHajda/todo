@@ -17,8 +17,8 @@
                     <label>Status</label>
                     <select class="form-control" name="status">
                         <option value="">None</option>
-                        <option value="1">Finished</option>
-                        <option value="0">Unfinished</option>
+                        <option value="finished">Finished</option>
+                        <option value="unfinished">Unfinished</option>
                     </select>
                 </div>
             </div>
