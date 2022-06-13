@@ -10,8 +10,8 @@ use App\Models\Item;
 use App\Models\ItemCategory;
 use App\Models\ItemUser;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
-use phpDocumentor\Reflection\DocBlock\Tags\Author;
 
 class ItemsController extends Controller
 {
@@ -20,50 +20,34 @@ class ItemsController extends Controller
         $users = User::where('admin', 0)->get();
 
         // Items filter
-        $category = request('category_id');
-        $status = request('status');
-        $shared = request('shared');
-        $d = false;
+        $category = request('category_id') == null ? null : request('category_id');
+        $status = request('status') == null ? null : request('status');
+        $shared = request('shared') == null ? null : request('shared') ;
 
-        $items = Item::when($category, function ($q) use ($category) {
-            $q->where('category_id', $category);
-        })->when($status, function ($q) use ($status) {
-            $q->where('done', $status == 'finished' ? 1 : 0);
-        })->where(function ($q) use ($shared) {
+        $items = null;
+        $category_where = $category == null ? 1 : 'category_id = ' . $category;
+        $status_where = $status == null ? 1 : ' done = ' . ($status == 'finished' ? 1 : 0);
+
+        if (auth()->user()->admin) {
             if ($shared != null) {
-                if (auth()->user()->admin) {
-                    $q->whereHas('users', function ($q2) use ($shared) {
-                        $q2->where('users.id', $shared);
-                    });
-                } else {
-                    if ($shared == auth()->user()->id) {
-                        $q->whereHas('users', function ($q) use ($shared) {
-                            $q->where('users.id', auth()->user()->id);
-                        })->withCount('users')->having('users_count', '>', 1);
-                    }
-                }
+                $items = DB::select('SELECT * FROM item_user left join items on items.id = item_user.item_id left JOIN item_categories ON item_categories.id = category_id where user_id = ' . $shared . ' AND ' . $category_where . ' AND ' . $status_where . ' AND ' . ' pre_deleted = 0');
             } else {
-                if ($shared == -1) {
-                    $q->withCount('users')->whereHas('users', function ($q2) use ($shared) {
-                        $q2->where('users.id', auth()->user()->id);
-                    })->having('users_count', '>', 1);
+                $items = DB::select('SELECT * FROM item_user inner join items on items.id = item_user.item_id INNER JOIN item_categories ON item_categories.id = category_id where ' . $category_where . ' AND ' . $status_where . ' AND ' . ' pre_deleted = 0');
+            }
+        } else {
+            if ($shared == -1) {
+                $items = DB::select('SELECT * FROM item_user INNER JOIN items ON items.id = item_user.item_id INNER JOIN item_categories ON item_categories.id = category_id where user_id = ' . auth()->user()->id . ' AND ' . $category_where . ' AND ' . $status_where . ' AND ' . ' pre_deleted = 0');
+            } else {
+                if ($shared == auth()->user()->id) {
+                    $items = DB::select('SELECT T1.*, heading, category_id, done, item_categories.name FROM (SELECT * FROM item_user GROUP BY item_id HAVING COUNT(*) = 1) as T1 
+                            INNER JOIN (SELECT * FROM item_user WHERE user_id = ' . auth()->user()->id . ') as T2 ON T1.user_id = T2.user_id
+                            INNER JOIN items ON items.id = T1.item_id LEFT JOIN item_categories ON item_categories.id = category_id WHERE ' . $category_where . ' AND ' . $status_where . ' AND ' . ' pre_deleted = 0  GROUP BY item_id');
                 } else {
-                    if ($shared == auth()->user()->id) {
-                        $q->whereHas('users', function ($q2) use ($shared) {
-                            $q2->where('users.id', auth()->user()->id);
-                        })->withCount('users')->having('users_count', '=', 1);
-                    } else {
-                        if (!auth()->user()->admin) {
-                            $q->whereHas('users', function ($q2) {
-                                $q2->where('users.id', auth()->user()->id);
-                            });
-                        }
-                    }
+                    $items = DB::select('SELECT * FROM item_user LEFT JOIN items ON items.id = item_user.item_id LEFT JOIN item_categories ON item_categories.id = category_id where user_id = ' . auth()->user()->id . ' AND ' .  $category_where . ' AND ' . $status_where . ' AND ' . ' pre_deleted = 0');
                 }
             }
-        })->where('pre_deleted', 0)->get();
-
-        return view('frontend.pages.items.index', compact('categories', 'users', 'items', 'shared'));
+        }
+        return view('frontend.pages.items.index', compact('categories', 'users', 'items'));
     }
 
     public function edit($id) {
@@ -162,7 +146,12 @@ class ItemsController extends Controller
         }
 
         if (!$item) return redirect()->route('index');
-        $item->$finished_deleted = 1;
+
+        if ($finished_deleted == 'undone') {
+            $item->done = 0;
+        } else {
+            $item->$finished_deleted = 1;
+        }
 
         $item->save();
 

@@ -17,6 +17,7 @@
                                     <div class="form-group">
                                         <label for="recipient-name" class="col-form-label">Heading:</label>
                                         <input type="text" class="form-control" name="heading" id="recipient-name" value="{{ isset($item) ? $item->heading : '' }}">
+                                        @include('frontend._partials._errors', ['error_name' => 'heading'])
                                     </div>
                                 </div>
                             </div>
@@ -26,6 +27,7 @@
                                     <div class="form-group">
                                         <label for="message-text" class="col-form-label">Description:</label>
                                         <textarea class="form-control" id="message-text" name="description">{{ isset($item) ? $item->description : '' }}</textarea>
+                                        @include('frontend._partials._errors', ['error_name' => 'description'])
                                     </div>
                                 </div>
                             </div>
@@ -40,6 +42,7 @@
                                                 <option value="{{ $category->id }}" {{ isset($item) && $item->category_id == $category->id ? 'selected' : '' }}>{{ ucfirst($category->name) }}</option>
                                             @endforeach
                                         </select>
+                                        @include('frontend._partials._errors', ['error_name' => 'category_id'])
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
@@ -56,6 +59,7 @@
                                                 @endif
                                             @endforeach
                                         </select>
+                                        @include('frontend._partials._errors', ['error_name' => 'user_id'])
                                     </div>
                                 </div>
                             </div>

@@ -31,6 +31,7 @@
             </div>
         </div>
     </div>
+    @include('frontend._partials.modal._modal_form')
     @include('frontend._partials.modal._modal_show')
 @endsection
 
