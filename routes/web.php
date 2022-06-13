@@ -31,6 +31,7 @@ Route::middleware(['auth'])->namespace('Users')->group(function() {
     });
 
     Route::get('/items/done/{id}/{option}', [ItemsController::class, 'make_deleted_finished'])->name('items.done');
+    Route::get('/items/show/{id}', [ItemsController::class, 'show'])->name('items.show');
 
 });
 

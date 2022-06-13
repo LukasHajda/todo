@@ -124,6 +124,16 @@ class ItemsController extends Controller
         return view('frontend.pages.items.delete', compact('items'));
     }
 
+    public function show($id) {
+        $item = Item::findOrFail($id);
+        $categories = ItemCategory::all();
+        $users = User::where('admin', 0)->get();
+        $items = Item::where('pre_deleted', 0)->get();
+        $show_modal = true;
+
+        return view('frontend.pages.items.index', compact('item', 'users', 'categories', 'items', 'show_modal'));
+    }
+
     public function restore($id) {
         $item = Item::findOrFail($id);
         $item->pre_deleted = 0;
