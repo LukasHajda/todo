@@ -32,20 +32,22 @@ class ItemsController extends Controller
                         $q2->where('users.id', $shared);
                     });
                 } else {
-                    $q->whereHas('users', function ($qe) {
-                        $qe->where('users.id', auth()->user()->id);
-                    });
+                    if ($shared == auth()->user()->id) {
+                        $q->whereHas('users', function ($qe) {
+                            $qe->withCount('items')->having('items_count', '=', 1);
+                        });
+                    }
                 }
             } else {
                 if ($shared == -1) {
                     $q->withCount('users')->whereHas('users', function ($q2) use ($shared) {
                         $q2->where('users.id', auth()->user()->id);
-                    })->having('items_count', '>', 1);
+                    })->having('users_count', '>', 1);
                 } else {
                     if ($shared == auth()->user()->id) {
                         $q->whereHas('users', function ($q2) use ($shared) {
-                            $q2->where('users.id', auth()->user()->id)->withCount('users')->having('items_count', '=', 1);
-                        });
+                            $q2->where('users.id', auth()->user()->id);
+                        })->withCount('users')->having('users_count', '=', 1);
                     } else {
                         if (!auth()->user()->admin) {
                             $q->whereHas('users', function ($q2) {
@@ -129,11 +131,12 @@ class ItemsController extends Controller
         } else {
             $item = Item::whereHas('users', function ($q) {
                 $q->where('users.id', auth()->user()->id);
-            })->where('id', $id)->get();
+            })->where('id', $id)->first();
         }
 
         if (!$item) return redirect()->route('index');
         $item->$finished_deleted = 1;
+
         $item->save();
 
         return redirect()->route('index');
