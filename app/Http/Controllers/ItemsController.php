@@ -32,7 +32,7 @@ class ItemsController extends Controller
             if ($shared != null) {
                 $items = DB::select('SELECT * FROM item_user left join items on items.id = item_user.item_id left JOIN item_categories ON item_categories.id = category_id where user_id = ' . $shared . ' AND ' . $category_where . ' AND ' . $status_where . ' AND ' . ' pre_deleted = 0');
             } else {
-                $items = DB::select('SELECT * FROM item_user inner join items on items.id = item_user.item_id INNER JOIN item_categories ON item_categories.id = category_id where ' . $category_where . ' AND ' . $status_where . ' AND ' . ' pre_deleted = 0');
+                $items = DB::select('SELECT * FROM item_user left join items on items.id = item_user.item_id left JOIN item_categories ON item_categories.id = category_id where ' . $category_where . ' AND ' . $status_where . ' AND ' . ' pre_deleted = 0');
             }
         } else {
             if ($shared == -1) {
