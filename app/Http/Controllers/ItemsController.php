@@ -4,10 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateItemRequest;
 use App\Http\Requests\UpdateItemRequest;
+use App\Mail\ItemNotificationMail;
+use App\Mail\SharedItemNotificationMail;
 use App\Models\Item;
 use App\Models\ItemCategory;
 use App\Models\ItemUser;
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
+use phpDocumentor\Reflection\DocBlock\Tags\Author;
 
 class ItemsController extends Controller
 {
@@ -24,7 +28,7 @@ class ItemsController extends Controller
         $items = Item::when($category, function ($q) use ($category) {
             $q->where('category_id', $category);
         })->when($status, function ($q) use ($status) {
-            $q->where('done', $status);
+            $q->where('done', $status == 'finished' ? 1 : 0);
         })->where(function ($q) use ($shared) {
             if ($shared != null) {
                 if (auth()->user()->admin) {
@@ -33,9 +37,9 @@ class ItemsController extends Controller
                     });
                 } else {
                     if ($shared == auth()->user()->id) {
-                        $q->whereHas('users', function ($qe) {
-                            $qe->withCount('items')->having('items_count', '=', 1);
-                        });
+                        $q->whereHas('users', function ($q) use ($shared) {
+                            $q->where('users.id', auth()->user()->id);
+                        })->withCount('users')->having('users_count', '>', 1);
                     }
                 }
             } else {
@@ -59,14 +63,14 @@ class ItemsController extends Controller
             }
         })->where('pre_deleted', 0)->get();
 
-        return view('frontend.pages.items.index', compact('categories', 'users', 'items'));
+        return view('frontend.pages.items.index', compact('categories', 'users', 'items', 'shared'));
     }
 
     public function edit($id) {
         $item = Item::findOrFail($id);
         $categories = ItemCategory::all();
         $users = User::where('admin', 0)->get();
-        $items = Item::all();
+        $items = Item::where('pre_deleted', 0)->get();
 
         return view('frontend.pages.items.edit', compact('item', 'users', 'categories', 'items'));
     }
@@ -96,6 +100,19 @@ class ItemsController extends Controller
         $item->users()->attach($request->user_id);
 
         $item->save();
+
+        if (auth()->user()->admin) {
+            $data['emails'] = array();
+            $data['usernames'] = array();
+            foreach ($request->user_id as $user_id) {
+                $user = User::findOrFail($user_id);
+                array_push($data['emails'], $user->email);
+                array_push($data['usernames'], $user->username);
+            }
+            $data['heading'] = $item->heading;
+
+            $this->send_shared_notification($data);
+        }
 
 
         return redirect()->route('index');
@@ -139,8 +156,27 @@ class ItemsController extends Controller
 
         $item->save();
 
+        if ($finished_deleted == 'done' && !auth()->user()->admin) {
+            $data['from'] = auth()->user()->username;
+            $data['item'] = $item;
+            $data['email'] = auth()->user()->email;
+            $this->send_item_notification($data);
+        }
+
         return redirect()->route('index');
     }
+
+
+    private function send_item_notification($data) {
+        $recipient = env('MAIL_RECIPIENT', 'example@gmail.com');
+        Mail::to($recipient)->send(new ItemNotificationMail($data));
+    }
+
+    private function send_shared_notification($data) {
+        Mail::to($data['emails'])->send(new SharedItemNotificationMail($data));
+    }
+
+
 
 
 }
