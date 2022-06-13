@@ -427,7 +427,12 @@ Credits
   width: 100% !important;
 }
 
-body > div.container > div:nth-child(2) > div > table > thead > tr > th:nth-child(5),
-body > div.container > div:nth-child(2) > div > table > tbody > tr > td:last-child {
+body > div.container > div:nth-child(2) > div > div > table > thead > tr > th:nth-child(5),
+body > div.container > div:nth-child(2) > div > div > table > tbody > tr > td:last-child {
   text-align: center;
+}
+
+.table-scrollbar {
+  max-height: 400px;
+  overflow-y: scroll;
 }

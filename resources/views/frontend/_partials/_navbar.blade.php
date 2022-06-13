@@ -7,10 +7,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="#">Users</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Items</a>
+                <a class="nav-link" href="{{ route('index') }}">Items</a>
             </li>
         </ul>
 
@@ -22,7 +19,7 @@
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="user">
                         <form class="form-inline my-2 my-lg-0" method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <button type="submit">
+                            <button type="submit" class="dropdown-item">
                                 Logout
                             </button>
                         </form>

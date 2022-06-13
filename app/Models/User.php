@@ -44,7 +44,7 @@ class User extends Authenticatable
     ];
 
     public function items() {
-        return $this->belongsToMany(Item::class, 'item_user')->withTimestamps();
+        return $this->belongsToMany(Item::class, 'item_user', 'user_id', 'item_id')->withTimestamps();
     }
 
 }
