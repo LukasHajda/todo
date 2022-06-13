@@ -17,24 +17,24 @@
                         <p class='field'>
                             <label for='user'>USERNAME</label>
                             <input type='text' id='user' name='username' required>
-                            @include('frontend._partials._auth_errors', ['error_name' => 'username'])
+                            @include('frontend._partials._errors', ['error_name' => 'username'])
                         </p>
 
                         <p class='field'>
                             <label for='user'>E-MAIL</label>
                             <input type='text' id='user' name='email' required>
-                            @include('frontend._partials._auth_errors', ['error_name' => 'email'])
+                            @include('frontend._partials._errors', ['error_name' => 'email'])
                         </p>
                         <p class='field'>
                             <label for='pass'>PASSWORD</label>
                             <input type='password' id='pass' name='password' title='Password' required>
-                            @include('frontend._partials._auth_errors', ['error_name' => 'password'])
+                            @include('frontend._partials._errors', ['error_name' => 'password'])
                         </p>
 
                         <p class='field'>
                             <label for='pass'>PASSWORD CONFIRMATION</label>
                             <input type='password' id='pass' name='password_confirmation' title='Password' required>
-                            @include('frontend._partials._auth_errors', ['error_name' => 'password_confirmation'])
+                            @include('frontend._partials._errors', ['error_name' => 'password_confirmation'])
                         </p>
 
                         <input type='submit' id='do_login' value='SIGN UP' required>

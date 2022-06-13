@@ -17,12 +17,12 @@
                     <p class='field'>
                         <label for='user'>E-MAIL</label>
                         <input type='text' id='user' name='email' required>
-                        @include('frontend._partials._auth_errors', ['error_name' => 'email'])
+                        @include('frontend._partials._errors', ['error_name' => 'email'])
                     </p>
                     <p class='field'>
                         <label for='pass'>PASSWORD</label>
                         <input type='password' id='pass' name='password' title='Password' required>
-                        @include('frontend._partials._auth_errors', ['error_name' => 'password'])
+                        @include('frontend._partials._errors', ['error_name' => 'password'])
                     </p>
 
                     <input type='submit' id='do_login' value='GET STARTED' required>
