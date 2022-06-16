@@ -48,6 +48,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>User</label>
+{{--                                        <h1>{{ $item->users()->count() }}</h1>--}}
                                         <select class="form-control select2-selection--multiple" name="user_id[]" multiple="multiple">
                                             @foreach($users as $user)
                                                 @if(isset($item))
